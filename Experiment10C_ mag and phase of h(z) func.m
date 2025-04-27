@@ -1,0 +1,16 @@
+close all;
+w = linspace(-pi, pi, 1001);
+x,z = [];
+r = 1;
+z = r.*exp(j*w);
+H = ((6.*z).*(7.*z-3))./((2.*z-1).*(3.*z-1));
+figure;
+subplot(2,1,1);
+plot(w, abs(H));
+xlabel("\omega");
+ylabel("Magnitude\H(omega)");
+grid on;
+subplot(2,1,2);
+plot(w, angle(H));
+xlabel("\omega");
+ylabel("Angle\H(omega)");
