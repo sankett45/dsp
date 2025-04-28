@@ -1,0 +1,503 @@
+E2 - Convolution 
+clc; 
+close all; 
+%% Inputs 
+x = input("Enter input sequence: "); 
+h = input("Enter impulse sequence: "); 
+n1 = length(x); 
+n2 = length(h); 
+% Plots 
+subplot(2,2,1); 
+stem(0:1:n1-1, x); 
+title("x[n]"); 
+subplot(2,2,2); 
+stem(0:1:n2-1,h); 
+title("h[n]"); 
+%Length of Y 
+N = n1 + n2 - 1; 
+%% Built-in Convolution (no zero-padding!) 
+y1 = conv(x, h); 
+%% Zero Padding for Manual Convolution 
+x = [x zeros(1, N - n1)]; 
+h = [h zeros(1, N - n2)]; 
+%% Manual Convolution 
+y2 = zeros(1, N); 
+for n = 1:N 
+for k = 1:n 
+y2(n) = y2(n) + x(k) * h(n - k + 1); 
+end 
+end 
+%% Plots 
+subplot(2,2,3); 
+stem(0:N-1,y1); 
+title("Built-in CONV"); 
+subplot(2,2,4); 
+stem(0:N-1, y2); 
+title("Manual Convolution"); 
+Discrete Functions 
+x = input("Enter input sequence: "); 
+h = input("Enter impulse sequence: "); 
+Define functions here instead and for a range of like in, n = -20:20; 
+n = 0:20; 
+x = max(0,n); 
+h = sin(2*pi*0.1*n*1); 
+Wrap Around Method 
+clc; 
+close all; 
+%% Inputs and Parameters 
+E3 - Circular Convolution 
+x = input("Enter input sequence: "); 
+h = input("Enter impulse sequence: "); 
+n1 = length(x); 
+n2 = length(h); 
+ 
+%% Padding to Equal Length for Circular Convolution 
+if n1 > n2 
+   h = [h zeros(1, n1 - n2)]; 
+   N = n1; 
+elseif n2 > n1 
+   x = [x zeros(1, n2 - n1)]; 
+   N = n2; 
+else 
+   N = n1; 
+End 
+ 
+%% Built-in Circular Convolution 
+y1 = cconv(x, h, N); 
+ 
+%% Manual Circular Convolution 
+y = zeros(1, N); 
+for n = 1:N 
+   s = 0; 
+   for m = 1:N 
+       % Circular indexing for wrapping around h 
+       idx = mod(n - m, N) + 1; 
+       s = s + x(m) * h(idx); 
+   end 
+   y(n) = s; 
+end 
+ 
+%% Plots 
+figure; 
+subplot(2,1,1); 
+stem(0:N-1, y1, 'filled'); 
+title("Built-in Circular Convolution"); 
+xlabel('n'); 
+ylabel('Amplitude'); 
+subplot(2,1,2); 
+stem(0:N-1, y, 'filled'); 
+title("Manual Circular Convolution"); 
+xlabel('n'); 
+ylabel('Amplitude'); 
+ 
+Column Method 
+clc; 
+close all; 
+%% Inputs 
+x = input('Enter input sequence: '); 
+h = input('Enter impulse response: '); 
+n1 = length(x); 
+n2 = length(h); 
+N = max(n1, n2); 
+%% Zero-padding to make lengths equal 
+x = [x zeros(1, N - n1)]; 
+h = [h zeros(1, N - n2)]; 
+ 
+%% In-built Circular Convolution 
+y1 = cconv(x, h, N); 
+ 
+%% Build circulant matrix from h 
+H = zeros(N); 
+for i = 1:N 
+H(:, i) = circshift(h', i - 1);  % Build circulant matrix 
+end 
+%% Circular Convolution using Matrix Multiplication 
+y = (H * x')';  % Transpose result to row vector 
+%% Plot Both 
+figure; 
+subplot(2,1,1); 
+stem(0:N-1, y, 'filled'); 
+title('Circular Convolution (Column Method)'); 
+xlabel('n'); ylabel('Amplitude'); 
+subplot(2,1,2); 
+stem(0:N-1, y1, 'filled'); 
+title('Circular Convolution (Built-in cconv)'); 
+xlabel('n'); ylabel('Amplitude'); 
+clc; 
+close all; 
+%% Parameters 
+fm = 0.2;             
+n = -50:1:50;         
+E4 - Sampling 
+% message frequency 
+% discrete index 
+t = linspace(-50, 50, 1000);  % time vector 
+%% Continuous-Time Signal 
+x = sin(2*pi*fm*t); 
+subplot(4,1,1); 
+plot(t, x, 'LineWidth', 1.2); 
+title("Original Continuous-Time Sine Wave"); 
+xlabel('Time'); ylabel('Amplitude'); 
+grid on; 
+%% Sampling 
+% Over Sampled 
+fs1 = 5; 
+x1 = sin(2*pi*fm*n/fs1); 
+% Sampled (Nyquist) 
+fs2 = 0.4; 
+x2 = sin(2*pi*fm*n/fs2); 
+% Under Sampled (Aliased) 
+fs3 = 0.1; 
+x3 = sin(2*pi*fm*n/fs3); 
+%% Plots 
+subplot(4,1,2); 
+stem(n, x1); 
+title("Over Sampled (fs = 500 Hz)"); 
+xlabel('n'); ylabel('Amplitude'); grid on; 
+hold on; 
+plot(n, x1); 
+subplot(4,1,3); 
+stem(n, x2); 
+title("Critically Sampled (fs = 200 Hz)"); 
+xlabel('n'); ylabel('Amplitude'); grid on; 
+hold on; 
+plot(n, x2); 
+subplot(4,1,4); 
+stem(n, x3); 
+title("Under Sampled (fs = 50 Hz) - Aliasing"); 
+xlabel('n'); ylabel('Amplitude'); grid on; 
+hold on; 
+plot(n, x3); 
+E5 - DTFT and IDTFT 
+DTFT 
+clc; 
+close all; 
+%% Parameters 
+N = -50:1:50;                  
+% Time index 
+omega = linspace(-4*pi, 4*pi, 1000);  % Frequency range 
+%% Sequence: Unit Step (Right-sided) 
+x = double(N >= 0);  % Logical to numeric 
+subplot(3,1,1); 
+stem(N, x); 
+title('Original Sequence x[n]'); 
+xlabel('n'); ylabel('x[n]'); 
+grid on; 
+%% DTFT Computation (Manually) 
+X = zeros(size(omega)); 
+for i = 1:length(omega) 
+for b = 1:length(N) 
+X(i) = X(i) + x(b) * exp(-1j * omega(i) * N(b)); 
+end 
+end 
+%% Plots 
+subplot(3,1,2); 
+plot(omega, abs(X)); 
+title('DTFT Magnitude |X(\omega)|'); 
+xlabel('\omega'); ylabel('|X(\omega)|'); 
+grid on; 
+subplot(3,1,3); 
+plot(omega, angle(X)); 
+title("DTFT Phase"); 
+IDTFT 
+%% Reconstruction using IDTFT 
+x_recons = zeros(size(N));  % Initialize reconstructed signal 
+for b = 1:length(N) 
+% Sum over all omega samples 
+for a = 1:length(omega) 
+x_recons(b) = x_recons(b) + (1/(2*pi)) * X(a) * exp(1j*omega(a)*N(b)) * delta_omega; 
+end 
+end 
+%% Plot Reconstructed Signal 
+subplot(4,1,4); 
+stem(N, real(x_recons));  % Real part of reconstructed signal 
+title("Reconstructed x[n] using IDTFT"); 
+xlabel('n'); ylabel('x_{reconstructed}[n]'); 
+grid on; 
+E6 - DFT_IDFT 
+clc; 
+close all; 
+%% Parameters 
+N = input("Enter N: ");  % Length of sequence 
+x = input("Enter sequence: ");  % Input sequence 
+n = 0:N-1;  % Time index 
+ 
+%% DFT Computation 
+X = zeros(size(n));  % Initialize DFT array 
+for k = 0:N-1 
+   for m = 0:N-1  % Change loop variable to m to avoid conflict 
+       X(k+1) = X(k+1) + (x(m+1) * exp(-1j*2*pi*k*m/N));  % DFT summation 
+   end 
+end 
+ 
+%% FFT Computation 
+X1 = fft(x);  % Using built-in FFT 
+ 
+%% Plots 
+subplot(4,1,1); 
+stem(n, x);  % Original sequence 
+subplot(4,1,2); 
+stem(n, abs(X));  % Magnitude of DFT 
+subplot(4,1,3); 
+stem(n, abs(X1));  % Magnitude of FFT 
+ 
+%% IDFT Computation 
+x_recons = zeros(size(n));  % Initialize reconstructed sequence 
+for m = 0:N-1 
+   for k = 0:N-1 
+       x_recons(m+1) = x_recons(m+1) + (1/N) * (X(k+1) * exp(1j*2*pi*k*m/N));  % IDFT formula 
+   end 
+end 
+subplot(4,1,4); 
+stem(n, real(x_recons));  % Reconstructed sequence (real part) 
+E7 - DFT_IDFT Matrix Method 
+clc; 
+close all; 
+%% Parameters 
+x = input("Enter sequence: "); 
+N = length(x); 
+%% W matrix for DFT 
+W = zeros(N, N); 
+for k = 0:N-1 
+   for n = 0:N-1 
+       W(n+1, k+1) = exp(-1j*2*pi*k*n/N);  % DFT W matrix 
+   end 
+end 
+% DFT Computation using W matrix 
+X = W * x.';  % Matrix multiplication (not element-wise) 
+%% FFT Computation 
+X1 = fft(x);  % Using built-in FFT function 
+%% Plots 
+subplot(4,1,1); 
+stem(x);  % Original sequence 
+subplot(4,1,2); 
+stem(abs(X));  % Magnitude of DFT coefficients 
+subplot(4,1,3); 
+stem(abs(X1));  % Magnitude of FFT coefficients 
+%% IDFT 
+W_idft = zeros(N, N); 
+for n = 0:N-1 
+   for k = 0:N-1 
+       W_idft(n+1, k+1) = exp(1j*2*pi*k*n/N); 
+   end 
+end 
+% IDFT Computation 
+x_recons = (1/N) * W_idft * X; 
+subplot(4,1,4); 
+stem(real(x_recons)); 
+E8 - FFT - DIT 
+ 
+clc; 
+close all; 
+%% Parameters 
+x = input("Enter sequence: "); 
+N = length(x); 
+p = nextpow2(N); 
+x = [x zeros(1, ((2^p)-N))]; % padding to make length power of 2 
+S = log2(N); 
+%% FFT (Built-in) 
+X1 = fft(x); 
+%% FFT Manual 
+x = bitrevorder(x);  % Bit-reversal order for FFT 
+for stage = 1:S 
+   m = 2^stage;  % Subproblem size for this stage 
+   half_m = m / 2;  % Half of the subproblem size 
+   w_m = exp(-1j * 2 * pi / m);  % Twiddle factor for this stage 
+   p = 1;  % Initial position of the first element in the pair 
+   q = 1 + half_m;  % Position of the second element in the pair 
+   n = 0; 
+   
+   while (n < (half_m) && q <= N) 
+       w = w_m^n;  % Calculate the twiddle factor for this iteration 
+       
+       % Perform the FFT calculations 
+       y = x(p) + w * x(q); 
+       z = x(p) - w * x(q); 
+       
+       % Update the values of x(p) and x(q) 
+       x(p) = y; 
+       x(q) = z; 
+       
+       % Increment p and q for the next pair 
+       p = p + 1; 
+       q = q + 1; 
+       n = n + 1; 
+       % Check if q exceeds the current stage size and update p and q for the next iteration 
+       if rem(q, m) == 1 
+           p = p + half_m; 
+           q = q + half_m; 
+           n = 0; 
+       end 
+   end 
+end 
+%% Plots 
+subplot(2,1,1); 
+stem(abs(X1));  % FFT result (magnitude) 
+subplot(2,1,2); 
+stem(abs(x));  % Manual FFT result (magnitude) 
+E8 - FFT - DIF 
+clc; 
+close all; 
+%% Parameters 
+x = input("Enter sequence: "); 
+N = length(x); 
+p = nextpow2(N); 
+x = [x zeros(1, ((2^p)-N))]; % padding to make length power of 2 
+N = length(x); % Update N after padding 
+S = log2(N); 
+%% FFT (Built-in) for comparison 
+X1 = fft(x); 
+%% DIF FFT Manual 
+X = x; % Initialize X with input sequence 
+for stage = S:-1:1 
+   m = 2^stage; % Current subproblem size 
+   half_m = m/2; % Half of current subproblem size 
+   w_m = exp(-1j * 2 * pi / m); % Twiddle factor 
+   
+   for k = 0:m:(N-1) % Step by m (not N/m) 
+       for n = 0:(half_m-1) 
+           % Butterfly operation (MATLAB uses 1-based indexing) 
+           p = k + n + 1; % +1 for MATLAB indexing 
+           q = p + half_m; 
+           
+           a = X(p); 
+           b = X(q); 
+           
+           % Update values 
+           X(p) = a + b; 
+           X(q) = (a - b) * (w_m^n); 
+       end 
+   end 
+end 
+% Final bit-reversal permutation 
+X = bitrevorder(X); 
+%% Plots 
+subplot(2,1,1); 
+stem(abs(X1)); 
+title('Built-in FFT (Magnitude)'); 
+xlabel('Frequency Bin'); 
+ylabel('Magnitude'); 
+subplot(2,1,2); 
+stem(abs(X)); 
+title('Manual DIF FFT (Magnitude)'); 
+xlabel('Frequency Bin'); 
+ylabel('Magnitude'); 
+ 
+E9 - Z transform 
+clc; 
+clear all; 
+close all; 
+%% Parameters 
+n = -70:1:70; 
+seq_len = length(n); 
+x = zeros(1,seq_len); 
+%% exponential 
+x = exp(-0.1*n) + exp(0.1*n); 
+subplot(2,2,[1,2]); plot(n,x); 
+omega = linspace(-pi,pi,100); 
+z = []; 
+for r = linspace(0,3,100) 
+   z = [z;r.*exp(j*omega)]; 
+end 
+xtemp = []; 
+X = []; 
+Xfinal = []; 
+for c = 1:length(z) 
+   for a = 1:length(z) 
+       for b = 1:length(n) 
+           xtemp = [xtemp x(b).*(z(c,a).^(-n(b)))]; 
+       end 
+       xtemp = sum(xtemp); 
+       X = [X xtemp]; 
+       xtemp = []; 
+   end 
+   Xfinal = [Xfinal;X]; 
+   X = []; 
+end 
+subplot(2,2,[3,4]); 
+surf(real(z), imag(z), 10*log10(abs(Xfinal)), 'linestyle', 'none'); 
+xlabel('Re(z)'); 
+ylabel('Im(z)'); 
+zlabel("|X(z)|"); 
+ 
+E10 - Z Plane Visualization 
+10A Visualization of Z Plane 
+%% Experiment 10A 
+%Visualization of z plane 
+close all; 
+w = linspace(-pi,pi,1001); 
+H = []; 
+z = []; 
+for r = linspace(0,3,1001) 
+   z = [z;r.*exp(j*w)]; 
+end 
+H = (2.*z)./(2.*z-1); 
+mesh(real(z), imag(z), abs(H)); 
+grid on; 
+xlabel("Re(z)"); 
+ylabel("Im(z)"); 
+zlabel("H(z)"); 
+10B - Pole Zero Plot 
+%% Experiment 10B 
+close all; 
+zplane([1 2 3], [1 2 3 4]) 
+10C - Magnitude Phase Plot 
+close all; 
+w = linspace(-pi, pi, 1001); 
+x,z = []; 
+r = 1; 
+z = r.*exp(j*w); 
+H = ((6.*z).*(7.*z-3))./((2.*z-1).*(3.*z-1)); 
+figure; 
+subplot(2,1,1); 
+plot(w, abs(H)); 
+xlabel("\omega"); 
+ylabel("Magnitude\H(omega)"); 
+grid on; 
+subplot(2,1,2); 
+plot(w, angle(H)); 
+xlabel("\omega"); 
+ylabel("Angle\H(omega)"); 
+10D - Effect of Pole  
+%% Experiment 10D 
+%% Effect of distance of pole from unit circle on magnitude 
+close all; 
+w = linspace(-pi, pi, 1001); 
+x,z = []; 
+r = 1; 
+z = r.*exp(j*w); 
+H = z./(z-0.5); 
+figure; 
+subplot(2,1,1); 
+plot(w, abs(H)); 
+xlabel("\omega"); 
+ylabel("Magnitude\H(omega)"); 
+grid on; 
+subplot(2,1,2); 
+plot(w, angle(H)); 
+xlabel("\omega"); 
+ylabel("Angle\H(omega)"); 
+%% Another 
+H = z./(z-0.99); 
+figure; 
+subplot(2,1,1); 
+plot(w, abs(H)); 
+xlabel("\omega"); 
+ylabel("Magnitude\H(omega)"); 
+grid on; 
+subplot(2,1,2); 
+plot(w, angle(H)); 
+xlabel("\omega"); 
+ylabel("Angle\H(omega)"); 
+%% Another 
+H = z./(z-0.1); 
+figure; 
+subplot(2,1,1); 
+plot(w, abs(H)); 
+xlabel("\omega"); 
+ylabel("Magnitude\H(omega)"); 
+grid on; 
+subplot(2,1,2); 
+plot(w, angle(H)); 
+xlabel("\omega"); 
+ylabel("Angle\H(omega)");
