@@ -1,0 +1,135 @@
+EXPERIMENT-2A
+ %starting index by default zero 
+clear all; 
+close all; 
+clc; 
+% Input signals 
+x = input("Enter the input signal x(n): "); 
+h = input("Enter the input signal h(n): "); 
+n1 = length(x); % Length of x 
+n2 = length(h); % Length of h 
+N1 = n1 + n2 - 1;  
+% Predefined convolution (for comparison) 
+y1 = conv(x, h);  
+N2 = length(y1);   
+x = [x, zeros(1, N1 - n1)]; 
+h = [h, zeros(1, N1 - n2)]; 
+% Manual convolution 
+y = zeros(1, N1); 
+for n = 1:N1 
+for k = 1:n 
+if (n-k+1) > 0 && (n-k+1) <= n2 
+y(n) = y(n) + x(k) * h(n-k+1); 
+end 
+end 
+end 
+T1 = 1:N1;  % Time vector for manual convolution 
+result 
+T2 = 1:N2;  % Time vector for predefined convolution 
+result 
+% Plotting 
+subplot(4,1,1); 
+stem(T1, x(1:N1),'filled'); % Plot only up to the length 
+of N1 
+xlabel("n"); 
+ylabel("x(n)"); 
+t
+ itle("Input Signal x(n)"); 
+grid on; 
+subplot(4,1,2); 
+stem(T1, h(1:N1),'filled'); % Plot only up to the length 
+of N1 
+xlabel("n"); 
+ylabel("h(n)"); 
+t
+ itle("Input Signal h(n)"); 
+grid on; 
+subplot(4,1,3); 
+stem(T1, y,'filled'); 
+xlabel("n"); 
+ylabel("y(n)"); 
+t
+ itle("Manual Convolution Result y(n)"); 
+grid on; 
+subplot(4,1,4); 
+stem(T2, y1,'filled'); 
+xlabel("n"); 
+ylabel("y1(n)"); 
+t
+ itle("Predefined Convolution Result y1(n)"); 
+grid on; 
+
+
+
+
+EXPERIMENT-2B
+ %starting index as input 
+clear all; 
+close all; 
+clc; 
+x = input("Enter the input signal x(n): "); 
+h = input("Enter the input signal h(n): "); 
+nx0 = input("Enter the starting index of x(n): "); 
+nh0 = input("Enter the starting index of h(n): "); 
+n1 = length(x); % Length of x 
+n2 = length(h); % Length of h 
+N1 = n1 + n2 - 1; % Length of the output of 
+convolution 
+y1 = conv(x, h);  % Predefined convolution 
+N2 = length(y1); 
+tx = nx0:nx0 + n1 - 1; 
+th = nh0:nh0 + n2 - 1; 
+y_start = nx0 + nh0; 
+y_end = y_start + N1 - 1; 
+ty = y_start:y_end; 
+x = [x, zeros(1, N1 - n1)]; 
+h = [h, zeros(1, N1 - n2)]; 
+y = zeros(1, N1); 
+for n = 1:N1 
+for k = 1:n 
+if (n-k+1) > 0 && (n-k+1) <= n2 
+y(n) = y(n) + x(k) * h(n-k+1); 
+end 
+end 
+end 
+Ty1 = y_start:y_start + N2 - 1; 
+subplot(4,1,1); 
+stem(tx, x(1:length(tx))); 
+xlabel("n"); 
+ylabel("x(n)"); 
+t
+ itle("Input Signal x(n)"); 
+t
+ ickVals = min(tx):max(tx); 
+xticks(tickVals); 
+grid on; 
+subplot(4,1,2); 
+stem(th, h(1:length(th))); 
+xlabel("n"); 
+ylabel("h(n)"); 
+t
+ itle("Input Signal h(n)"); 
+t
+ ickVals = min(th):max(th); 
+xticks(tickVals); 
+grid on; 
+subplot(4,1,3); 
+stem(ty, y); 
+xlabel("n"); 
+ylabel("y(n)"); 
+t
+ itle("Manual Convolution Result y(n)"); 
+t
+ ickVals = min(ty):max(ty); 
+xticks(tickVals); 
+grid on; 
+subplot(4,1,4); 
+stem(Ty1, y1); 
+xlabel("n"); 
+ylabel("y1(n)"); 
+t
+ itle("Predefined Convolution Result y1(n)"); 
+t
+ ickVals = min(Ty1):max(Ty1); 
+xticks(tickVals); 
+grid on;
