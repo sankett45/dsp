@@ -1,0 +1,128 @@
+EXPERIMENT-10A
+ %%Z-Transform visulization
+ clear all;
+ close all;
+ clc;
+ w=linspace(-pi pi 1001);
+ z = [];
+ %Generate grid of z = r * e^(jω)
+ for r = linspace(03100)
+ z = [z; r exp(1j w)];
+ end
+ %Calculate H(z) = (2z)/(2z- 1)
+ %H=z*sin(pi/4) /( * (z- exp(1j*pi/4)/2) (2
+exp(-1j*pi/4)/2));
+ H=z *(z-0 5*c(pi/4));
+ %Plotting
+ f
+ igure;
+ mesh(real(z) imag(z) abs(H));
+ grid on;
+ xlabel('Re(Z)');
+ ylabel('Im(Z)');
+ zlabel('|H(Z)|');
+ t
+ itle('Z-Transform Surface Plot of H(z)');
+
+
+
+
+
+EXPERIMENT-10B
+ %poles and zeros
+ clear all;
+ close all;
+ clc;
+ %Coefficients of the transfer function H(z) = (1 + 2z^-1 + 3z^-2) / (1 + 2z^-1 + 3z^-2 + 4z^-3)
+ %Numerator (z-domain): 1 + 2z^-1 + 3z^-2
+ num=[123];
+ %Denominator (z-domain): 1 + 2z^-1 + 3z^-2 + 4z^-3
+ den =[1 234];
+ %Plot poles and zeros
+ f
+ igure;
+ zplane(numden);
+ t
+ itle('Poles and Zeros of H(z) = (1 + 2z^{-1} + 3z^{-2}) / (1 + 2z^{-1} + 3z^{-2} + 4z^{-3})');
+ grid on;
+
+
+
+
+
+
+EXPERIMENT-10C
+ %%MAGNITUDEANDPHASE
+ clear all;
+ close all;
+ clc;
+ w=linspace(-pi pi 1001);
+ x =[];
+ z = [];
+ r = 1;
+ z = r exp(1j * w); % z =e^(jω)
+ %DefineH(z)
+ H=((6 z) (7 z- 3)) (((2 z)- 1) (3 z- 1));
+ %Plot magnitude response
+ f
+ igure;
+ subplot(2 1 1
+ plot(wabs(H));
+ xlabel('\omega');
+ ylabel('Magnitude |H(\omega)|');
+ t
+ itle('Magnitude Response of H(z)');
+ grid on;
+ subplot(2 1 2
+ plot(wangle(H)); % Optional: Phase response
+ xlabel('\omega');
+ ylabel('Phase \angleH(\omega)');
+ t
+ itle('Phase Response of H(z)');
+ grid on;
+
+
+
+
+
+
+EXPERIMENT-10D
+ %%
+ clear all;
+ close all;
+ clc;
+ w=linspace(-pi pi 1001);
+ x =[];
+ z = [];
+ r = 1;
+ z = r exp(1j * w); % z =e^(jω)
+ %DefineH(z) for a = 0
+ H=z (z- 0 5)
+ %Plot magnitude response for a = 0
+ subplot(3 1 1
+ plot(wabs(H));
+ xlabel('\omega');
+ ylabel('Magnitude |H(\omega)| at 0 5')
+ t
+ itle('Magnitude Response of H(z) for a = 0 5')
+ grid on;
+ %DefineH(z) for a = 0 9
+ H=z (z- 0 99)
+ %Plot magnitude response for a = 0 9
+ subplot(3 1 2
+ plot(wabs(H));
+ xlabel('\omega');
+ ylabel('Magnitude |H(\omega)| at 0 99')
+ t
+ itle('Magnitude Response of H(z) for a = 0 99')
+ grid on;
+ %DefineH(z) for a = 1
+ H=z (z- 1);
+ %Plot magnitude response for a = 1
+ subplot(3 1 3
+ plot(wabs(H));
+ xlabel('\omega');
+ ylabel('Magnitude |H(\omega)| at 1');
+ t
+ itle('Magnitude Response of H(z) for a = 1');
+ grid on

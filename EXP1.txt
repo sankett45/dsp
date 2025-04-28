@@ -1,0 +1,166 @@
+1.Sine function 
+EXPERIMENT-1
+ clear all; 
+close all; 
+clc; 
+N=input('enter the number of cycles:-'); 
+n=0:0.05:N; 
+x=10*sin(2*pi*n); 
+subplot(1,2,1); 
+plot(n,x); 
+xlabel("Time"); 
+ylabel("Amplitude");
+ylabel("Amplitude"); 
+t
+ itle("Continuous time  sine wave"); 
+grid; 
+subplot(1,2,2); 
+stem(n,x); 
+xlabel("Time"); 
+ylabel("Amplitude"); 
+t
+ itle("Discrete time sine wave"); 
+grid; 
+
+
+
+2.Traingular 
+clear all; 
+close all; 
+clc; 
+N=input('enter the number of cycles:-'); 
+M=input('enter amplitude:-'); 
+n1=0:1:M; 
+n2=M:-1:0; 
+n=[]; 
+for i=1:N 
+n=[n n1 n2]; 
+end 
+subplot(1,2,1); 
+ylabel("Amplitude"); 
+t
+ itle("Continuous time  sine wave"); 
+grid; 
+subplot(1,2,2); 
+stem(n,x); 
+xlabel("Time"); 
+ylabel("Amplitude"); 
+t
+ itle("Discrete time sine wave"); 
+grid; 
+subplot(1,2,1); 
+plot(n); 
+xlabel("Time"); 
+ylabel("Amplitude"); 
+t
+ itle("Continuous time  traingular wave"); 
+grid; 
+subplot(1,2,2); 
+stem(n); 
+xlabel("Time"); 
+ylabel("Amplitude"); 
+t
+ itle("Discrete time traingular wave"); 
+grid; 
+
+
+3.Trapezoid 
+clear all; 
+close all; 
+clc; 
+N=input('enter the number of cycles:-'); 
+M=input('enter amplitude:-'); 
+n1=0:1:M; 
+n2=M; 
+n3=M; 
+n4=M; 
+n5=M:-1:0; 
+n=[]; 
+for i=1:N 
+n=[n n1 n2 n3 n4 n5]; 
+end 
+subplot(2,1,1); 
+plot(n); 
+xlabel("Time"); 
+ylabel("Amplitude"); 
+t
+ itle("Continuous time  trapezoid wave"); 
+grid; 
+subplot(2,1,2); 
+stem(n); 
+xlabel("Time"); 
+ylabel("Amplitude"); 
+t
+ itle("Discrete time trapezoid wave"); 
+grid; 
+
+
+4.Unit Impulse 
+clear all;  
+close all; 
+clc; 
+% Define the range for discrete-time indices 
+n = -10:10; % Choose a symmetric range for better 
+visualization 
+% Create the unit impulse function 
+x = (n == 0); % Logical condition to create 1 at n=0, 0 
+otherwise 
+% Plot the discrete-time unit impulse function 
+stem(n, x, 'r', 'LineWidth', 1.5); % 'r' for red color 
+xlabel("n (Time Index)"); 
+ylabel("Amplitude"); 
+t
+ itle("Discrete-Time Unit Impulse Function"); 
+grid on; 
+
+
+5.Unit Step 
+clear all;  
+close all; 
+clc; 
+n = -10:10; % Choose a symmetric range for 
+visualization 
+x = (n >= 0); % Logical condition: 1 for n >= 0, 0 
+otherwise 
+% Plot the discrete-time unit step function 
+stem(n, x, 'b', 'LineWidth', 1.5); % 'b' for blue color 
+xlabel("n (Time Index)"); 
+ylabel("Amplitude"); 
+t
+ itle("Discrete-Time Unit Step Function"); 
+grid on; 
+
+ 
+6.Unit ramp 
+clear all;  
+close all; 
+clc; 
+n = -10:10; % Choose a symmetric range for 
+visualization 
+x = n .* (n >= 0); % Multiply n by the condition (n >= 0) 
+stem(n, x, 'g', 'LineWidth', 1.5); % 'g' for green color 
+xlabel("n (Time Index)"); 
+ylabel("Amplitude"); 
+t
+ itle("Discrete-Time Unit Ramp Function"); 
+grid on; 
+
+
+
+
+7.Parabolic 
+clear all;  
+close all; 
+clc; 
+n = -10:10; % Symmetric range for visualization 
+x = (n.^2 / 2) .* (n >= 0); % Parabolic equation applied 
+for n >= 0 
+stem(n, x, 'm', 'LineWidth', 1.5); % 'm' for magenta 
+color 
+xlabel("n (Time Index)"); 
+ylabel("Amplitude"); 
+t
+ itle("Discrete-Time Parabolic Function"); 
+grid on; 
+
+

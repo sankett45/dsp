@@ -1,0 +1,60 @@
+EXPERIMENT-9
+ clear all;
+ close all;
+ clc;
+ %Definenandinitialize x_n
+ n =-70:1:70;
+ length_of_sgn = length(n);
+ x_n = zeros(1 length_of_sgn);
+ a=0 3
+ %%Unitstepfunction
+ for ii = 1:length_of_sgn
+ if n(ii) >= 0
+ x_n(ii) = 1;
+ else
+ x_n(ii) = 0;
+ end
+ end
+ %exponential
+ for ii = 1:length_of_sgn
+ if n(ii) >= 0
+ x_n(ii) = exp(-a * n(ii));
+ else
+ x_n(ii) = 0;
+ end
+ end
+ %Plot unit step function
+ subplot(2 2 1:2
+ stem(nx_n);
+ t
+ itle('function');
+ xlabel('n');
+ ylabel('x[n]');
+ %Definecomplexz-plane circle (Z-transform grid)
+ omega =linspace(-pi pi 100);
+ z = [];
+ for r = linspace(03100)
+ z = [z; r * exp(1j * omega)];
+ end
+ %ComputeZ-transform
+ xfinal = [];
+ for c = 1:size(z 1)
+ X =[];
+ for a = 1:size(z 2)
+ xtemp = 0;
+ for b = 1:length(n)
+ xtemp = xtemp+x_n(b) * (z(c a)^(-n(b)))
+ end
+ X =[Xxtemp];
+ end
+ xfinal = [xfinal; X];
+ end
+ subplot(2 2 3:4
+ surf(real(z) imag(z) 10*log10(abs(xfinal)));
+ t
+ itle('Z-transform Magnitude (dB)');
+ xlabel('Re(z)');
+ ylabel('Im(z)');
+ zlabel('|X(z)| (dB)');
+ shading interp; % Smooth the surface
+

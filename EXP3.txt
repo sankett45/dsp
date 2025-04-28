@@ -1,0 +1,55 @@
+EXPERIMENT-3
+ clear all; 
+close all; 
+clc; 
+x1 = input('Enter the first sequence: '); 
+x2 = input('Enter the second sequence: '); 
+N1 = length(x1); 
+N2 = length(x2); 
+N = max(N1, N2); 
+% Zero-padding to make lengths equal 
+if (N1 > N2) 
+x2 = [x2 zeros(1, N1 - N2)]; 
+end 
+if (N2 > N1) 
+x1 = [x1 zeros(1, N2 - N1)]; 
+end 
+% Circular Convolution using inbuilt function 
+y1 = cconv(x1, x2, N); 
+% Circular Convolution using formula 
+y = []; 
+for n = 1:N 
+s = 0; 
+for m = 1:N 
+s = s + (x1(m) * x2(mod(n - m, N) + 1)); 
+end 
+y = [y s]; 
+end 
+% Plot the sequences 
+subplot(4,1,1); 
+stem(x1, 'filled'); 
+grid on; 
+t
+ itle('First Sequence'); 
+xlabel('n'); 
+ylabel('x1[n]'); 
+subplot(4,1,2); 
+stem(x2, 'filled'); 
+grid on; 
+t
+ itle('Second Sequence'); 
+xlabel('n'); 
+ylabel('x2[n]'); 
+subplot(4,1,3); 
+stem(y, 'filled'); 
+grid on; 
+t
+ itle('Circular Convolution (Manual Calculation)'); 
+xlabel('n'); 
+ylabel('y[n]'); 
+stem(y1, 'filled'); 
+grid on; 
+t
+ itle('Circular Convolution (Using cconv Function)'); 
+xlabel('n'); 
+ylabel('y1[n]');

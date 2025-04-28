@@ -1,0 +1,73 @@
+Experiment-6 
+f
+ igure; 
+%Dft,Idft 
+Clear all; 
+Close all 
+Clc; 
+x = input('Enter the sequence as a vector:'); 
+% Parameters 
+N = length(x);     % Number of samples 
+n = 0:N-1;        
+ % Sample indices 
+%Manual DFT computation 
+X1 = zeros(1, N); 
+for k = 0:N-1 
+for n_idx = 0:N-1 
+X1(k+1) = X1(k+1) + x(n_idx+1) * exp(
+1j*2*pi*k*n_idx/N); 
+end 
+end 
+magX1 = abs(X1); 
+angX1 = angle(X1); 
+%Built-in DFT using fft 
+X2 = fft(x); 
+magX2 = abs(X2); 
+angX2 = angle(X2); 
+% Manual IDFT to reconstruct the signal 
+X3 = zeros(1, N); 
+for n_idx = 0:N-1 
+for k = 0:N-1 
+X3(n_idx+1) = X3(n_idx+1) + X1(k+1) * 
+exp(1j*2*pi*k*n_idx/N); 
+end 
+X3(n_idx+1) = X3(n_idx+1) / N; 
+end 
+%Plotting 
+% Original Signal 
+subplot(3,2,1); 
+stem(n, x, 'filled'); 
+t
+ itle('Original Signal'); 
+xlabel('n'); ylabel('x[n]'); 
+% Magnitude of DFT (Manual) - X1 
+subplot(3,2,2); 
+stem(0:N-1, magX1, 'filled'); 
+t
+ itle('Magnitude of DFT (manual)'); 
+xlabel('k'); ylabel('|X1[k]|'); 
+% Phase of DFT (Manual) - X1 
+subplot(3,2,3); 
+stem(0:N-1, angX1, 'filled'); 
+t
+ itle('Phase of DFT (manual)'); 
+xlabel('k'); ylabel('∠X1[k] (rad)'); 
+% Magnitude of DFT (Built-in) - X2 
+subplot(3,2,4); 
+stem(0:N-1, magX2, 'filled'); 
+t
+ itle('Magnitude of DFT (built in)'); 
+xlabel('k'); ylabel('|X2[k]|'); 
+% Phase of DFT (Built-in) - X2 
+subplot(3,2,5); 
+stem(0:N-1, angX2, 'filled'); 
+t
+ itle('Phase of DFT (built in)'); 
+xlabel('k'); ylabel('∠X2[k] (rad)'); 
+% Reconstructed Signal using IDFT - X3 
+subplot(3,2,6); 
+stem(n, real(X3), 'filled'); 
+t
+ itle('Reconstructed Signal (X3)'); 
+xlabel('n'); ylabel('Re[X3[n]]');
+
