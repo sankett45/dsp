@@ -1,0 +1,115 @@
+EXPERIMENT-4
+ %nyquist rate 
+clear all; 
+close all; 
+clc; 
+t = -100:1:100; % defining time 
+fm = 0.02; 
+x = cos(2*pi*fm*t); 
+subplot(2,2,1); 
+plot(t,x); 
+xlabel("time in seconds"); 
+ylabel("x(t)"); 
+t
+ itle("Continuous-Time Signal"); 
+% Under-sampling (fs < 2fm) 
+fs1 = 0.01; 
+n1 = -10:10;  
+x1 = cos(2*pi*fm/fs1*n1); 
+subplot(2,2,2); 
+stem(n1,x1); 
+hold on; 
+plot(n1,x1,":"); 
+hold off;  
+t
+ itle('Discrete-Time Signal (fs < 2fm)');  
+xlabel("n"); 
+ylabel("x(n)"); 
+% Critical sampling (fs = 2fm) 
+fs2 = 2*fm;  
+n2 = -10:10;  
+x2 = cos(2*pi*fm/fs2*n2); 
+subplot(2,2,3); 
+stem(n2,x2); 
+hold on; 
+plot(n2,x2,":"); 
+hold off;  
+t
+ itle('Discrete-Time Signal (fs = 2fm)');  
+xlabel("n"); 
+ylabel("x(n)"); 
+% Over-sampling (fs > 2fm) 
+fs3 = 0.5; 
+n3 = -50:50;  
+x3 = cos(2*pi*fm/fs3*n3); 
+subplot(2,2,4); 
+stem(n3,x3); 
+hold on; 
+plot(n3,x3,":"); 
+hold off;  
+t
+ itle('Discrete-Time Signal (fs > 2fm)');  
+xlabel("n"); 
+ylabel("x(n)");  
+%nyquist rate example 
+clear all; close all; clc; 
+f1 = 1000;  % First frequency component 
+f2 = 1900;  % Second frequency component 
+fmax = max(f1, f2);   
+T = 1/min(f1, f2);  % Period corresponding to the 
+minimum frequency 
+t = 0:0.01*T:2*T;  % Time vector for continuous signal 
+x = cos(2*pi*f1*t) + cos(2*pi*f2*t);   
+% Continuous-Time Signal 
+subplot(2,2,1); 
+plot(t, x); 
+xlabel("Time (seconds)"); 
+ylabel("Amplitude"); 
+t
+ itle("Continuous-Time Signal"); 
+grid on; 
+% Oversampling (fs > 2*fmax) 
+fs1 = 10 * fmax;  % Sampling frequency much higher 
+than Nyquist rate 
+n1 = 0:1/fs1:2*T; 
+x1 = cos(2*pi*f1*n1) + cos(2*pi*f2*n1); 
+subplot(2,2,2); 
+stem(n1, x1);  % Discrete-time representation 
+hold on; 
+plot(n1, x1, 'r');  % Connecting points with red line 
+hold off; 
+xlabel("Sample Index (n)"); 
+ylabel("Amplitude"); 
+t
+ itle("Oversampling (fs > 2*fmax)"); 
+grid on; 
+% Critical Sampling (fs = 2*fmax) 
+fs2 = 2 * fmax;  % Sampling frequency exactly at 
+Nyquist rate 
+n2 = 0:1/fs2:2*T; 
+x2 = cos(2*pi*f1*n2) + cos(2*pi*f2*n2); 
+subplot(2,2,3); 
+stem(n2, x2); 
+hold on; 
+plot(n2, x2, 'r'); 
+hold off; 
+xlabel("Sample Index (n)"); 
+ylabel("Amplitude"); 
+t
+ itle("Critical Sampling (fs = 2*fmax)"); 
+grid on; 
+% Under-Sampling (fs < 2*fmax) 
+fs3 = fmax;  % Sampling frequency below Nyquist 
+rate (Aliasing occurs) 
+n3 = 0:1/fs3:2*T; 
+x3 = cos(2*pi*f1*n3) + cos(2*pi*f2*n3); 
+subplot(2,2,4); 
+stem(n3, x3); 
+hold on; 
+plot(n3, x3, 'r'); 
+hold off; 
+xlabel("Sample Index (n)"); 
+ylabel("Amplitude"); 
+t
+ itle("Under-Sampling (fs < 2*fmax) - Aliasing"); 
+grid on;

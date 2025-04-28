@@ -1,0 +1,65 @@
+EXPERIMENT-8
+ clear all; 
+close all; 
+clc; 
+ 
+% Input the sequence from the user 
+x = input('enter the sequence: '); 
+ 
+% Find the next power of 2 greater than or equal to 
+length of x 
+p = nextpow2(length(x)); 
+ 
+% Zero-pad the sequence to make its length a power 
+of 2 
+x = [x zeros(1, (2^p) - length(x))]; 
+ 
+% Store the original zero-padded input for comparing 
+with MATLAB's fft() 
+x1 = x; 
+ 
+% Determine the total number of points and number 
+of stages 
+N = length(x); 
+S = log2(N); 
+ 
+% Reorder the input sequence using bit-reversal 
+x = bitrevorder(x); 
+ 
+% Begin Cooley-Tukey radix-2 DIT FFT algorithm 
+for stage = 1:S 
+    step = 2^stage;        % Total distance of butterfly 
+    half = step / 2;       % Half distance for butterfly 
+pairing 
+    for k = 1:step:N       % Loop through each butterfly 
+block 
+        for n = 0:half-1   % Loop through each butterfly 
+pair 
+            w = exp(-1j * 2 * pi * n / step);  % Twiddle 
+factor 
+            p = k + n; 
+            q = p + half; 
+            a = x(p); 
+            b = x(q); 
+            % Butterfly operation 
+            x(p) = a + w * b; 
+            x(q) = a - w * b; 
+        end 
+    end 
+end 
+ 
+% Final output of custom FFT 
+X = x; 
+ 
+% Compute FFT using MATLAB's built-in function for 
+verification 
+T = fft(x1); 
+ 
+% Display the outputs 
+disp('Custom FFT Output:'); 
+disp(X); 
+disp(' '); 
+disp('MATLAB fft() Output:'); 
+disp(T); 
+disp(' ')
+
